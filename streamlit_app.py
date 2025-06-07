@@ -1,5 +1,5 @@
 import streamlit as st
-import dill as pickle
+import joblib
 import gdown
 import os
 import pandas as pd
@@ -8,14 +8,18 @@ import pandas as pd
 @st.cache_resource
 def load_model_from_drive():
     file_id = "1uARTcSmf--15RMbvBxwP7TJFONlISYvK"
-    output_path = "recommender_model.pkl"
+    output_path = "recommender_model.joblib"  # change file extension to reflect format
 
     if not os.path.exists(output_path):
         url = f"https://drive.google.com/uc?id={file_id}"
         gdown.download(url, output_path, quiet=False)
 
-    with open(output_path, "rb") as f:
-        return pickle.load(f)
+    try:
+        model = joblib.load(output_path)
+        return model
+    except Exception as e:
+        st.error(f"❌ Failed to load model using joblib: {e}")
+        raise e
 
 # Load dataset lengkap dari CSV
 @st.cache_data
