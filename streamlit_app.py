@@ -1,5 +1,5 @@
 import streamlit as st
-import joblib
+import pickle
 import gdown
 import os
 import pandas as pd
@@ -58,7 +58,7 @@ cosine_similarities = model_data["cosine_similarities"]
 indices = model_data["indices"]
 
 # load function recommender
-content_recommender = joblib.load('recommender.pkl')
+content_recommender = pickle.load('recommender.pkl')
 
 # content_recommender = model_data["content_recommender"]
 
