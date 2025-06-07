@@ -24,8 +24,8 @@ def load_full_dataset():
     return df
 
 # Fungsi rekomendasi manual (ganti fungsi dari pickle)
-def content_recommender(name):
-    idx = indices[name]
+def content_recommender(title, cosine_similarities, indices, df, top_n=5):
+    idx = indices[title]
     sim_scores = list(enumerate(cosine_similarities[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[2:7]
@@ -33,7 +33,7 @@ def content_recommender(name):
     displayed_column = ['title', 'listed_in', 'description', 'rating']
     recommendations = df.iloc[netflix_indices][displayed_column]
     
-    st.subheader(f"🎥 Recommended Titles Similar to **{name}**")
+    st.subheader(f"🎥 Recommended Titles Similar to **{title}**")
     for idx, row in recommendations.iterrows():
         st.markdown(f"""
         ### 🎬 {row['title']}
@@ -82,7 +82,7 @@ if search_clicked and title:
             title,
             cosine_similarities,
             indices,
-            netflix_title_series
+            full_df
         )
 
         for i, rec_title in enumerate(recommendations, 1):
