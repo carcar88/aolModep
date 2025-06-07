@@ -1,5 +1,5 @@
 import streamlit as st
-import joblib
+import dill as pickle
 import gdown
 import os
 import pandas as pd
@@ -15,7 +15,7 @@ def load_model_from_drive():
         gdown.download(url, output_path, quiet=False)
 
     try:
-        model = joblib.load(output_path)
+        model = pickle.load(output_path)
         return model
     except Exception as e:
         st.error(f"❌ Failed to load model using joblib: {e}")
