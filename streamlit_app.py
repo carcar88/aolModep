@@ -28,24 +28,24 @@ def load_full_dataset():
     return df
 
 # Fungsi rekomendasi manual (ganti fungsi dari pickle)
-# def content_recommender(title, cosine_similarities, indices, df, top_n=5):
-#     idx = indices[title]
-#     sim_scores = list(enumerate(cosine_similarities[idx]))
-#     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-#     sim_scores = sim_scores[2:7]
-#     netflix_indices = [i[0] for i in sim_scores]
-#     displayed_column = ['title', 'listed_in', 'description', 'rating']
-#     recommendations = df.iloc[netflix_indices][displayed_column]
+def content_recommender(title, cosine_similarities, indices, df, top_n=5):
+    idx = indices[title]
+    sim_scores = list(enumerate(cosine_similarities[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[2:7]
+    netflix_indices = [i[0] for i in sim_scores]
+    displayed_column = ['title', 'listed_in', 'description', 'rating']
+    recommendations = df.iloc[netflix_indices][displayed_column]
     
-#     st.subheader(f"🎥 Recommended Titles Similar to **{title}**")
-#     for idx, row in recommendations.iterrows():
-#         st.markdown(f"""
-#         ### 🎬 {row['title']}
-#         Genre: {row['listed_in']}  
-#         Rating: {row['rating']}  
-#         Description: {row['description']}
-#         ---
-#         """)
+    st.subheader(f"🎥 Recommended Titles Similar to **{title}**")
+    for idx, row in recommendations.iterrows():
+        st.markdown(f"""
+        ### 🎬 {row['title']}
+        Genre: {row['listed_in']}  
+        Rating: {row['rating']}  
+        Description: {row['description']}
+        ---
+        """)
 
 # Kolom yang akan ditampilkan
 columns_to_show = [
@@ -59,7 +59,7 @@ model_data = load_model_from_drive()
 netflix_title_series = model_data["netflix_title"]  # Series of titles
 cosine_similarities = model_data["cosine_similarities"]
 indices = model_data["indices"]
-content_recommender = model_data["content_recommender"]
+# content_recommender = model_data["content_recommender"]
 
 full_df = load_full_dataset()
 
