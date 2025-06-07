@@ -58,7 +58,8 @@ cosine_similarities = model_data["cosine_similarities"]
 indices = model_data["indices"]
 
 # load function recommender
-content_recommender = pickle.load('recommender.pkl')
+with open('recommender.pkl', 'rb') as f:
+    content_recommender = pickle.load(f)
 
 # content_recommender = model_data["content_recommender"]
 
