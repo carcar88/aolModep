@@ -1,25 +1,20 @@
 import streamlit as st
-import dill as pickle
+import joblib
 import gdown
 import os
 import pandas as pd
 
 # Load model dari Google Drive
 @st.cache_resource
-def load_model_from_drive():
-    file_id = "1uARTcSmf--15RMbvBxwP7TJFONlISYvK"
-    output_path = "recommender_model.joblib"  # change file extension to reflect format
-
+def load_model_from_gdrive(file_id, output_path="model.pkl"):
     if not os.path.exists(output_path):
         url = f"https://drive.google.com/uc?id={file_id}"
         gdown.download(url, output_path, quiet=False)
 
-    try:
-        model = pickle.load(output_path)
-        return model
-    except Exception as e:
-        st.error(f"❌ Failed to load model using joblib: {e}")
-        raise e
+    with open(output_path, "rb") as f:
+        model = pickle.load(f)
+    
+    return model
 
 # Load dataset lengkap dari CSV
 @st.cache_data
@@ -55,10 +50,16 @@ columns_to_show = [
 ]
 
 # Load model dan data
-model_data = load_model_from_drive()
+file_id = "1LZQVpBg9ZsCweR6FA_ug1EjMauTDAaNw"
+model_data = load_model_from_gdrive(file_id)
+
 netflix_title_series = model_data["netflix_title"]  # Series of titles
 cosine_similarities = model_data["cosine_similarities"]
 indices = model_data["indices"]
+
+# load function recommender
+content_recommender = joblib.load('recommender.pkl')
+
 # content_recommender = model_data["content_recommender"]
 
 full_df = load_full_dataset()
