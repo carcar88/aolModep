@@ -37,9 +37,9 @@ def content_recommender(title, cosine_similarities, indices, df, top_n=5):
     for idx, row in recommendations.iterrows():
         st.markdown(f"""
         ### 🎬 {row['title']}
-        **Genre:** {row['listed_in']}  
-        **Rating:** {row['rating']}  
-        **Description:** {row['description']}
+        Genre: {row['listed_in']}  
+        Rating: {row['rating']}  
+        Description: {row['description']}
         ---
         """)
 
@@ -68,14 +68,6 @@ search_clicked = st.button("Get Recommended Movies")
 if search_clicked and title:
     # Cek apakah title ada di netflix_title_series
     if title in set(netflix_title_series):
-        # Ambil detail dari full_df
-        movie_details_df = full_df[full_df['title'] == title][columns_to_show]
-        if movie_details_df.empty:
-            st.warning("Details not found in the full dataset.")
-        else:
-            st.subheader("Selected Movie Details")
-            st.dataframe(movie_details_df, use_container_width=True)
-
         # Rekomendasi
         st.subheader("Recommended Titles:")
         recommendations = content_recommender(
@@ -85,12 +77,12 @@ if search_clicked and title:
             full_df
         )
 
-        for i, rec_title in enumerate(recommendations, 1):
-            with st.expander(f"{i}. {rec_title}"):
-                rec_details_df = full_df[full_df['title'] == rec_title][columns_to_show]
-                if not rec_details_df.empty:
-                    st.dataframe(rec_details_df, use_container_width=True)
-                else:
-                    st.warning(f"Details for '{rec_title}' not found.")
+        # for i, rec_title in enumerate(recommendations, 1):
+        #     with st.expander(f"{i}. {rec_title}"):
+        #         rec_details_df = full_df[full_df['title'] == rec_title][columns_to_show]
+        #         if not rec_details_df.empty:
+        #             st.dataframe(rec_details_df, use_container_width=True)
+        #         else:
+        #             st.warning(f"Details for '{rec_title}' not found.")
     else:
         st.error("❌ Movie title not found in model title list.")
