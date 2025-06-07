@@ -72,10 +72,7 @@ if search_clicked and title:
         # Rekomendasi
         st.subheader("Recommended Titles:")
         recommendations = content_recommender(
-            title,
-            cosine_similarities,
-            indices,
-            full_df
+            title
         )
 
         # for i, rec_title in enumerate(recommendations, 1):
