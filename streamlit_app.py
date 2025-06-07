@@ -22,33 +22,6 @@ def load_full_dataset():
     df = pd.read_csv("netflix_preprocessed.csv")  # Ganti path jika perlu
     return df
 
-# Fungsi rekomendasi manual (ganti fungsi dari pickle)
-def content_recommender(title, cosine_similarities, indices, df, top_n=5):
-    idx = indices[title]
-    sim_scores = list(enumerate(cosine_similarities[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[2:7]
-    netflix_indices = [i[0] for i in sim_scores]
-    displayed_column = ['title', 'listed_in', 'description', 'rating']
-    recommendations = df.iloc[netflix_indices][displayed_column]
-    
-    st.subheader(f"🎥 Recommended Titles Similar to **{title}**")
-    for idx, row in recommendations.iterrows():
-        st.markdown(f"""
-        ### 🎬 {row['title']}
-        Genre: {row['listed_in']}  
-        Rating: {row['rating']}  
-        Description: {row['description']}
-        ---
-        """)
-
-# Kolom yang akan ditampilkan
-columns_to_show = [
-    'type', 'title', 'director', 'cast', 'country', 'date_added',
-    'release_year', 'rating', 'listed_in', 'description',
-    'duration_minutes', 'duration_seasons'
-]
-
 # Load model dan data
 file_id = "1LZQVpBg9ZsCweR6FA_ug1EjMauTDAaNw"
 model_data = load_model_from_gdrive(file_id)
@@ -81,12 +54,5 @@ if search_clicked and title:
             title
         )
 
-        # for i, rec_title in enumerate(recommendations, 1):
-        #     with st.expander(f"{i}. {rec_title}"):
-        #         rec_details_df = full_df[full_df['title'] == rec_title][columns_to_show]
-        #         if not rec_details_df.empty:
-        #             st.dataframe(rec_details_df, use_container_width=True)
-        #         else:
-        #             st.warning(f"Details for '{rec_title}' not found.")
     else:
         st.error("❌ Movie title not found in model title list.")
